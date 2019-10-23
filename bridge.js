@@ -16,5 +16,4 @@
         })
      }
  }
-//test
  window.__bridge = new Bridge();
