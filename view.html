@@ -7,6 +7,26 @@
     <title>视图层</title>
 </head>
 <body>
-    <script type="text/javascript"></script>
+    <div id="app"></div>
+    <script type="text/javascript" src="./bridge.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js">
+        // 用vuejs做渲染层；微信自己写了一套MVVM框架
+    </script>
+    <script type="text/javascript">
+        new Vue({
+            el: '#app',
+            components: {
+                'wx-text': {
+                    template: `<span>
+                        <slot></slot>
+                    </span>`
+                }
+            },
+            template: `<wx-text>这是详情页面</wx-text>`
+        });
+        window.__bridge.onMessage((res) => {
+            console.log('res::::', res);
+        });
+    </script>
 </body>
 </html>

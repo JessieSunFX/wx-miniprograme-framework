@@ -12,9 +12,9 @@
     class Logic {
 
         init () {
+            this.uniqIndex = 0;//必须在navigateTo前初始化uniqIndex
             const firstPageUri = window.appJson.pages[0];
             this.navigateTo(firstPageUri);
-            this.uniqIndex = 0;
         }
 
         _generateUniqId () {
@@ -34,7 +34,13 @@
             this.uri = uri;//记一下，navigateTo的时候可以调用
             this.id = id;//同一个页面可能会被切进来多次
             this._initData();//在整个Page创建的时候就调用_initData，这样就创建了一个实例上的data
-            this._render();
+            this._render()
+                .then(() => {//_render是个异步过程，iframe load完了再发消息
+                    global.__bridge.postMessage(this.id, {
+                        type: 'initSet',
+                        data: this.data
+                    });
+                });
         }
 
         _initData () {
@@ -43,7 +49,7 @@
         }
 
         _render () {//小程序中没有，私有的
-            global.__bridge.createView(this.id)
+            return global.__bridge.createView(this.id)
                 .then(frame => {
                     this.$el = frame;
                 });

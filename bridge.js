@@ -15,5 +15,23 @@
             document.body.appendChild(frame);
         })
      }
+
+     /**
+      * 逻辑层向视图层发消息
+      * @param {String} [id] - 视图的唯一标识
+      * @param {Object} [params] - 需要set的数据 
+      */
+     postMessage (id, params) {
+        const target = document.querySelector(`#${id}`);
+        target.contentWindow.postMessage(params);//H5,file协议下不能postMessage
+     }
+
+     onMessage (callback) {
+         console.log('onmessage!!!');
+         window.addEventListener('message', function (event) {
+            console.log('receive-message:', event);
+            callback && callback();
+         });
+     }
  }
  window.__bridge = new Bridge();
