@@ -30,7 +30,7 @@
          console.log('onmessage!!!');
          window.addEventListener('message', function (event) {
             console.log('receive-message:', event);
-            callback && callback();
+            callback && callback(event.data);
          });
      }
  }

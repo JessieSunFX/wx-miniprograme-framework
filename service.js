@@ -56,7 +56,10 @@
         }
 
         setData () {
-
+            global.__bridge.postMessage(this.id, {
+                type: 'setData',
+                data: this.data
+            });
         }
     }
 

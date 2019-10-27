@@ -12,20 +12,33 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js">
         // 用vuejs做渲染层；微信自己写了一套MVVM框架
     </script>
+    <script type="wxml">
+        <wx-text>
+            这是详情页面{{name}}
+        </wx-text>
+    </script>
+
     <script type="text/javascript">
-        new Vue({
-            el: '#app',
-            components: {
-                'wx-text': {
-                    template: `<span>
-                        <slot></slot>
-                    </span>`
-                }
-            },
-            template: `<wx-text>这是详情页面</wx-text>`
-        });
+        let vm = null;
+    
         window.__bridge.onMessage((res) => {
             console.log('res::::', res);
+
+            vm = new Vue({
+                el: '#app',
+                data () {
+                    return res.data;
+                },
+                components: {
+                    'wx-text': {
+                        template: `<span>
+                            <slot></slot>
+                        </span>`
+                    }
+                },
+                template: document.querySelector('[type="wxml"]').innerHTML
+            });
+        
         });
     </script>
 </body>
