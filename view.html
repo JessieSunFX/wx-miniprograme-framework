@@ -23,22 +23,26 @@
     
         window.__bridge.onMessage((res) => {
             console.log('res::::', res);
-
-            vm = new Vue({
-                el: '#app',
-                data () {
-                    return res.data;
-                },
-                components: {
-                    'wx-text': {
-                        template: `<span>
-                            <slot></slot>
-                        </span>`
-                    }
-                },
-                template: document.querySelector('[type="wxml"]').innerHTML
-            });
-        
+            if (res.type === "initSet") {
+                vm = new Vue({
+                    el: '#app',
+                    data () {
+                        return res.data;
+                    },
+                    components: {
+                        'wx-text': {
+                            template: `<span>
+                                <slot></slot>
+                            </span>`
+                        }
+                    },
+                    template: document.querySelector('[type="wxml"]').innerHTML
+                });
+            } else if (res.type === "setData") {
+                for (let key in res.data) {
+                    vm[key] = res.data[key];
+                }
+            }           
         });
     </script>
 </body>

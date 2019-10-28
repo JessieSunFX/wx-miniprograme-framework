@@ -46,6 +46,9 @@
         _initData () {
             //让开发者写配置时定义的类（原型）继承PageBase，这样PageBase天然就有个data
             this.data = JSON.parse(JSON.stringify(this.data || {}));
+            //后面的this.data传递的是原型上的data;
+            //前面的this.data是给new出来的实例上添加一个data属性，不会改prototype上面的data；
+            // 从而屏蔽掉prototype上的data,因此这两个data不是一个；
         }
 
         _render () {//小程序中没有，私有的
